@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Start a conversation with WFC Australia about business clarity, organisational maturity, change, or human-AI readiness."
+    >
+    <title>Contact | WFC Australia</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="WFC Australia home">
+        <span class="brand-mark">WFC</span>
+        <span>
+          <strong>WFC Australia</strong>
+          <small>Reduce noise. Regain clarity. Move forward.</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Open navigation</span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="how-we-help.html">How We Help</a>
+        <a href="about.html">About</a>
+        <a class="active nav-cta" href="contact.html">Start a Conversation</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="page-hero contact-hero">
+        <div class="section-inner narrow">
+          <p class="eyebrow">Start a conversation</p>
+          <h1>You do not need to have every answer before reaching out.</h1>
+          <p>
+            The first step is clarity. Tell us a little about what is happening,
+            and we can talk through what kind of support may be useful.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner contact-layout">
+          <aside class="contact-note">
+            <p class="eyebrow">What to expect</p>
+            <h2>A calm first conversation.</h2>
+            <p>
+              No aggressive selling. No pressure to have everything neatly explained.
+              Just enough space to understand the situation and identify a practical
+              next step.
+            </p>
+            <p>
+              The first step is not a commitment. It is a conversation to understand
+              what is happening and whether WFC is the right support.
+            </p>
+            <div class="note-list">
+              <p>Useful for business clarity, pressure points, change, restructuring, or human-AI readiness.</p>
+              <p>Suitable when the owner knows something needs to change but wants a balanced way to approach it.</p>
+            </div>
+          </aside>
+
+          <form class="contact-form" id="conversation-form">
+            <div class="field-group">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field-group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field-group">
+              <label for="business">Business or organisation</label>
+              <input id="business" name="business" type="text" autocomplete="organization">
+            </div>
+            <div class="field-group">
+              <label for="topic">What would be useful to talk through?</label>
+              <select id="topic" name="topic">
+                <option>Business clarity</option>
+                <option>Organisational maturity review</option>
+                <option>Human + AI readiness</option>
+                <option>Change pathway design</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label for="message">What is happening?</label>
+              <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button class="button primary" type="submit">Start the Conversation</button>
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>&copy; 2026 WFC Australia. Calm clarity for real-world complexity.</p>
+        <a href="index.html">Back to Home</a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
