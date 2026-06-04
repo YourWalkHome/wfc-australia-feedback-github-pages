@@ -1,0 +1,42 @@
+WFC Australia Feedback Preview - GitHub Pages Publish Steps
+
+1. Open GitHub Desktop.
+
+2. Go to:
+   File > Add local repository
+
+3. Choose this folder:
+   C:\Users\benny\OneDrive\Documents\New project 3\wfc-australia-feedback-github-pages
+
+4. Click:
+   Add repository
+
+5. Click:
+   Publish repository
+
+6. Repository name:
+   wfc-australia-feedback
+
+7. Leave "Keep this code private" unticked if you want GitHub Pages to be simple and public.
+
+8. Click:
+   Publish repository
+
+9. After it uploads, open the repository on GitHub.
+
+10. Go to:
+    Settings > Pages
+
+11. Under "Build and deployment":
+    Source: Deploy from a branch
+    Branch: main
+    Folder: /root
+
+12. Click:
+    Save
+
+13. Wait a few minutes. GitHub will show a Pages link similar to:
+    https://YOUR-GITHUB-NAME.github.io/wfc-australia-feedback/
+
+14. Copy that link and send it to your trusted feedback panel.
+
