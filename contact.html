@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Start a conversation with WFC Australia about business decisions, organisational maturity, change, or human-AI readiness."
+      content="Use Compass to prepare for a conversation with WFC Australia about business decisions, organisational maturity, change, or human-AI readiness."
     >
-    <title>Contact | WFC Australia</title>
+    <title>Start a Conversation | WFC Australia</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -38,64 +38,115 @@
       <section class="page-hero contact-hero">
         <div class="section-inner narrow">
           <p class="eyebrow">Start a conversation</p>
-          <h1>You do not need to have every answer before reaching out.</h1>
+          <h1>Prepare for a better conversation with Ben Ryan.</h1>
           <p>
-            Tell us a little about what is happening, and we can talk through the
-            decision, pressure, or change pathway that needs attention.
+            Compass can help you organise your thoughts, identify what matters
+            most, and arrive at the first conversation feeling more prepared.
           </p>
         </div>
       </section>
 
       <section class="section">
-        <div class="section-inner contact-layout">
-          <aside class="contact-note">
-            <p class="eyebrow">What to expect</p>
-            <h2>A calm first conversation.</h2>
+        <div class="section-inner compass-layout">
+          <aside class="compass-panel">
+            <p class="eyebrow">Compass preparation</p>
+            <h2>Compass does not replace the human conversation.</h2>
             <p>
-              No aggressive selling. No pressure to have everything neatly explained.
-              Just enough space to understand the situation and identify a practical
-              next step.
+              Before speaking with Ben, Compass can help you organise your thoughts
+              and identify what is most important right now.
             </p>
             <p>
-              The first step is not a commitment. It is a conversation to understand
-              what is happening and whether WFC is the right support.
+              This is preparation, not advice. Compass will not diagnose the business,
+              tell you what to do, or replace Ben&apos;s judgement. It simply creates a
+              structured reflection that can help both sides begin from a clearer place.
             </p>
-            <div class="note-list">
-              <p>Useful for decisions, pressure points, change, restructuring, or human-AI readiness.</p>
-              <p>Suitable when the owner knows something needs to change but wants a balanced way to approach it.</p>
+            <div class="compass-principles" aria-label="Compass principles">
+              <span>Reflection only</span>
+              <span>No diagnosis</span>
+              <span>No pressure</span>
+              <span>You choose what to share</span>
             </div>
           </aside>
 
-          <form class="contact-form" id="conversation-form">
-            <div class="field-group">
-              <label for="name">Name</label>
-              <input id="name" name="name" type="text" autocomplete="name" required>
+          <div class="compass-experience">
+            <div class="experience-heading">
+              <p class="eyebrow">Guided reflection</p>
+              <h2>Four questions before the first conversation.</h2>
+              <p>
+                Take a few minutes. Plain language is enough. You can copy the
+                summary for yourself or email it to Ben when you are ready.
+              </p>
             </div>
-            <div class="field-group">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" required>
-            </div>
-            <div class="field-group">
-              <label for="business">Business or organisation</label>
-              <input id="business" name="business" type="text" autocomplete="organization">
-            </div>
-            <div class="field-group">
-              <label for="topic">What would be useful to talk through?</label>
-              <select id="topic" name="topic">
-                <option>Business clarity</option>
-                <option>Organisational maturity review</option>
-                <option>Human + AI readiness</option>
-                <option>Change pathway design</option>
-                <option>Not sure yet</option>
-              </select>
-            </div>
-            <div class="field-group">
-              <label for="message">What is happening?</label>
-              <textarea id="message" name="message" rows="6" required></textarea>
-            </div>
-            <button class="button primary" type="submit">Start the Conversation</button>
-            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-          </form>
+
+            <form class="compass-form" id="compass-form">
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" type="text" autocomplete="name" required>
+                </div>
+                <div class="field-group">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="business">Business or organisation</label>
+                <input id="business" name="business" type="text" autocomplete="organization">
+              </div>
+
+              <div class="reflection-questions">
+                <div class="question-card">
+                  <span>01</span>
+                  <label for="focus">What is taking up most of your attention right now?</label>
+                  <textarea id="focus" name="focus" rows="4" required></textarea>
+                </div>
+                <div class="question-card">
+                  <span>02</span>
+                  <label for="challenge">What feels most challenging?</label>
+                  <textarea id="challenge" name="challenge" rows="4" required></textarea>
+                </div>
+                <div class="question-card">
+                  <span>03</span>
+                  <label for="success">If things improved over the next six months, what would success look like?</label>
+                  <textarea id="success" name="success" rows="4" required></textarea>
+                </div>
+                <div class="question-card">
+                  <span>04</span>
+                  <label for="understand">What would you like Ben to understand before your conversation?</label>
+                  <textarea id="understand" name="understand" rows="4" required></textarea>
+                </div>
+              </div>
+
+              <div class="button-row form-actions">
+                <button class="button primary" type="submit">Create Reflection Summary</button>
+                <button class="button ghost" type="reset">Clear</button>
+              </div>
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </form>
+
+            <section class="reflection-output" id="reflection-output" hidden>
+              <div class="experience-heading">
+                <p class="eyebrow">Compass reflection</p>
+                <h2>Your preparation summary.</h2>
+                <p>
+                  This is a reflection of your own words. It is not advice or
+                  analysis. You can copy it, keep it, or send it to Ben before
+                  booking a conversation.
+                </p>
+              </div>
+
+              <div class="summary-card" id="summary-card"></div>
+
+              <textarea class="summary-copy" id="summary-copy" readonly aria-label="Plain text Compass reflection summary"></textarea>
+
+              <div class="button-row form-actions">
+                <button class="button secondary-dark" type="button" id="copy-summary">Copy Summary</button>
+                <a class="button primary" id="email-summary" href="mailto:ben@wfcaust.com.au">Email Summary To Ben</a>
+                <a class="button ghost" href="mailto:ben@wfcaust.com.au?subject=Start%20a%20WFC%20conversation">Book Conversation</a>
+              </div>
+            </section>
+          </div>
         </div>
       </section>
     </main>
