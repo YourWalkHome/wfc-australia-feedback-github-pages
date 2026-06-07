@@ -74,9 +74,9 @@
               <p class="eyebrow">Compass conversation</p>
               <h2>The first few steps of being understood.</h2>
               <p>
-                You do not need a perfect brief. Compass will ask one question at
-                a time, reflect back the key themes, then let you review the
-                summary before anything is shared.
+                You do not need a perfect brief. Compass responds dynamically,
+                asks thoughtful follow-up questions, then helps you review the
+                handover summary before anything is shared.
               </p>
             </div>
 
@@ -84,16 +84,18 @@
               <div class="conversation-log" id="conversation-log" aria-live="polite"></div>
 
               <form class="conversation-response" id="compass-conversation-form">
-                <label id="question-label" for="visitor-response">Your response</label>
+                <label id="question-label" for="visitor-response">Message Compass</label>
                 <textarea
                   id="visitor-response"
                   name="visitor-response"
                   rows="5"
                   autocomplete="off"
+                  placeholder="Start with what prompted you to reach out today."
                   required
                 ></textarea>
                 <div class="button-row conversation-controls">
-                  <button class="button primary" type="submit" id="continue-conversation">Continue</button>
+                  <button class="button primary" type="submit" id="continue-conversation">Send Message</button>
+                  <button class="button secondary-dark" type="button" id="prepare-summary" disabled>Prepare Handover Summary</button>
                   <button class="button ghost" type="button" id="restart-conversation">Start Again</button>
                 </div>
                 <p class="form-status" id="conversation-status" role="status" aria-live="polite"></p>
@@ -164,12 +166,13 @@
               </form>
 
               <div class="button-row form-actions">
-                <a class="button primary" id="email-handover" href="mailto:ben@wfcaust.com.au">Email Summary To Ben</a>
+                <button class="button primary" type="button" id="send-handover">Send Summary To Ben</button>
                 <a class="button secondary-dark" id="book-ben" href="mailto:ben@wfcaust.com.au?subject=Book%20a%20conversation%20with%20Ben%20Ryan">Book A Conversation With Ben</a>
               </div>
-              <p class="handover-note">
-                The email will open in your email app so you can review it before
-                sending. No further preparation is required before speaking with Ben.
+              <p class="handover-note" id="handover-status" role="status" aria-live="polite">
+                If the secure email service is connected, Ben receives the summary
+                directly. If it is not connected yet, your email app will open a
+                draft so you can review it before sending.
               </p>
             </section>
           </div>

@@ -1,0 +1,12 @@
+{
+  "name": "wfc-australia-compass-mvp",
+  "version": "0.2.0",
+  "private": true,
+  "description": "WFC Australia website with a secure Compass conversation backend.",
+  "scripts": {
+    "check": "node --check script.js && node --check lib/compass-agent.js && node --check api/compass.js && node --check api/handover.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

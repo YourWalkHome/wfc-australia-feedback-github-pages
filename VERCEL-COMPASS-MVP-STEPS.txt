@@ -1,0 +1,51 @@
+WFC Australia Compass MVP - Vercel Setup
+
+Why Vercel:
+- GitHub Pages can host the static website, but it cannot securely hold an AI key or send server-side email.
+- Vercel can host the same static site plus secure backend functions under /api.
+- The browser talks to /api/compass.
+- /api/compass talks to the AI service with the private key stored in Vercel.
+
+Recommended MVP path:
+
+1. Push this repository to GitHub.
+
+2. In Vercel, import the repository.
+
+3. Use the default Vercel settings.
+   The HTML, CSS, and JS files are served as the site.
+   The api folder becomes secure backend endpoints.
+
+4. Add Environment Variables in Vercel:
+   OPENAI_API_KEY = your private OpenAI API key
+   OPENAI_MODEL = gpt-4.1-mini
+   BEN_EMAIL = ben@wfcaust.com.au
+
+5. Optional email sending:
+   Add a Resend account and verified sender domain.
+   Then add:
+   RESEND_API_KEY = your Resend API key
+   HANDOVER_FROM_EMAIL = Compass <your-verified-sender@yourdomain.com>
+
+6. Deploy.
+
+7. Test:
+   Open /contact.html
+   Send a message to Compass
+   Prepare a handover summary
+   Review/edit the summary
+   Continue to booking
+   Send the summary to Ben
+
+Current MVP behaviour:
+- The visitor's conversation is remembered in the browser session.
+- The backend receives the current transcript each turn.
+- No database is required for the MVP.
+- No AI key is exposed in the browser.
+- If Resend is not configured, the handover opens an email draft instead of sending automatically.
+
+Future upgrades:
+- Add a real booking calendar link.
+- Store consented handovers in a secure CRM.
+- Add CAPTCHA or rate limiting before public launch.
+- Add server-side session storage only if WFC needs persistent records before booking.

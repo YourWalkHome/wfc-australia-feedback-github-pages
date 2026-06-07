@@ -256,6 +256,11 @@ textarea {
   cursor: pointer;
 }
 
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .button.primary {
   background: var(--clay);
   color: #fff;
@@ -825,6 +830,18 @@ p + p {
   background: rgba(234, 216, 201, 0.28);
 }
 
+.message.loading {
+  opacity: 0.74;
+}
+
+.message.loading p::after {
+  content: "";
+  display: inline-block;
+  width: 1.4em;
+  text-align: left;
+  animation: compassDots 1.2s steps(4, end) infinite;
+}
+
 .speaker {
   display: block;
   margin-bottom: 0.35rem;
@@ -848,6 +865,10 @@ p + p {
   gap: 0.8rem;
   border-top: 1px solid var(--line);
   padding-top: 1rem;
+}
+
+.conversation-response.is-busy {
+  opacity: 0.88;
 }
 
 .conversation-response textarea {
@@ -1104,5 +1125,24 @@ textarea:focus {
   *::before,
   *::after {
     scroll-behavior: auto !important;
+  }
+}
+
+@keyframes compassDots {
+  0% {
+    content: "";
+  }
+
+  25% {
+    content: ".";
+  }
+
+  50% {
+    content: "..";
+  }
+
+  75%,
+  100% {
+    content: "...";
   }
 }

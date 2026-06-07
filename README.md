@@ -1,8 +1,24 @@
-# WFC Australia Feedback Preview
+# WFC Australia Compass MVP
 
-This repository hosts the WFC Australia website feedback preview through GitHub Pages.
+This repository hosts the WFC Australia website and the secure Compass MVP backend.
 
 The preview is intended for a small trusted review panel. It is not the final public WFC Australia website.
+
+## Recommended Hosting
+
+Use Vercel for this version.
+
+GitHub Pages can still show static pages, but it cannot securely run the Compass AI backend or hold private API keys. Vercel can serve the same website and run the secure `/api` functions.
+
+## Compass Backend
+
+- `/api/compass` handles dynamic Compass replies and structured summary generation.
+- `/api/handover` handles the reviewed handover to Ben Ryan.
+- The visitor's conversation is remembered in browser session storage during the visit.
+- No AI key is exposed in the browser.
+- If email sending is not configured, the handover endpoint returns an email draft link.
+
+See `VERCEL-COMPASS-MVP-STEPS.txt` for setup steps.
 
 ## Review Focus
 
@@ -13,11 +29,12 @@ The preview is intended for a small trusted review panel. It is not the final pu
 - Does the site show what clarity enables: better decisions, stronger alignment, and responsible progress?
 - Is the Human + AI section practical enough without becoming AI hype?
 - Does the site feel practical without becoming salesy?
-- Does the Compass-managed Start a Conversation page help a business owner feel heard, respected, and better prepared?
+- Does the API-powered Compass Start a Conversation page help a business owner feel heard, respected, and better prepared?
 - Does Compass feel like a bridge to Ben Ryan rather than a barrier?
-- Does the one-question-at-a-time flow feel calm and human rather than like a form or chatbot gimmick?
+- Does Compass ask thoughtful follow-up questions without becoming long, heavy, or directive?
 - Does the editable handover summary feel useful without becoming advice, diagnosis, or analysis?
 - Is it clear that nothing is sent automatically and the visitor controls what is shared?
+- Does the secure backend approach feel appropriate for a real WFC human-AI bridge?
 - What feels unclear, too soft, too heavy, or missing?
 
 The goal is not a perfect website yet. The goal is a trusted first conversation.

@@ -14,6 +14,7 @@ const visitorResponse = document.querySelector("#visitor-response");
 const questionLabel = document.querySelector("#question-label");
 const conversationStatus = document.querySelector("#conversation-status");
 const restartConversation = document.querySelector("#restart-conversation");
+const prepareSummary = document.querySelector("#prepare-summary");
 const summaryReview = document.querySelector("#summary-review");
 const managedSummaryCard = document.querySelector("#managed-summary-card");
 const managedSummary = document.querySelector("#managed-summary");
@@ -22,49 +23,33 @@ const continueToHandover = document.querySelector("#continue-to-handover");
 const summaryStatus = document.querySelector("#summary-status");
 const handoverPanel = document.querySelector("#handover-panel");
 const handoverForm = document.querySelector("#handover-form");
-const emailHandover = document.querySelector("#email-handover");
+const sendHandover = document.querySelector("#send-handover");
 const bookBen = document.querySelector("#book-ben");
+const handoverStatus = document.querySelector("#handover-status");
 
-const compassSteps = [
-  {
-    key: "prompted",
-    question: "What prompted you to reach out today?",
-    placeholder: "A few plain-language sentences is enough.",
-    acknowledgement:
-      "Thank you. I am hearing there is something worth slowing down around before you speak with Ben.",
-  },
-  {
-    key: "challenge",
-    question: "What feels most important or challenging right now?",
-    placeholder: "This might be a decision, pressure point, uncertainty, team issue, system problem, or something else.",
-    acknowledgement:
-      "That helps name where the pressure is sitting.",
-  },
-  {
-    key: "impact",
-    question: "How is this affecting you, your team, or the business?",
-    placeholder: "You can include practical impacts, people impacts, financial pressure, decision fatigue, or anything else that matters.",
-    acknowledgement:
-      "That context will help Ben understand what this is carrying in real terms.",
-  },
-  {
-    key: "success",
-    question: "If things improved over the next few months, what would you hope to see?",
-    placeholder: "Think in practical terms: decisions made, pressure reduced, roles clearer, systems improved, or a better way forward.",
-    acknowledgement:
-      "That gives the conversation a useful direction without forcing an answer too early.",
-  },
-  {
-    key: "understand",
-    question: "What would you like Ben to understand before your conversation?",
-    placeholder: "This can be context, a concern, something sensitive, or simply what you want handled carefully.",
-    acknowledgement:
-      "Thank you. I will turn this into a clear handover summary for you to review before anything is shared.",
-  },
-];
+const API_BASE = window.COMPASS_API_BASE || (window.location.protocol === "file:" ? "http://localhost:3000" : "");
+const SESSION_KEY = "wfc-compass-session";
 
-let currentStep = 0;
-let compassResponses = {};
+let compassSession = loadSession();
+
+function loadSession() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
+    if (saved && Array.isArray(saved.messages)) return saved;
+  } catch {
+    sessionStorage.removeItem(SESSION_KEY);
+  }
+
+  return {
+    id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    messages: [],
+    summary: null,
+  };
+}
+
+function saveSession() {
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(compassSession));
+}
 
 function escapeHtml(value) {
   return String(value || "")
@@ -79,13 +64,13 @@ function formValue(form, name) {
   return new FormData(form).get(name)?.toString().trim() || "";
 }
 
-function addMessage(role, text) {
-  if (!conversationLog) return;
+function addMessage(role, content, { save = true, loading = false } = {}) {
+  if (!conversationLog) return null;
 
   const message = document.createElement("article");
-  message.className = `message ${role}`;
+  message.className = `message ${role}${loading ? " loading" : ""}`;
   const speaker = role === "visitor" ? "You" : "Compass";
-  const body = escapeHtml(text)
+  const body = escapeHtml(content)
     .split("\n")
     .filter(Boolean)
     .map((line) => `<p>${line}</p>`)
@@ -97,40 +82,128 @@ function addMessage(role, text) {
   `;
   conversationLog.append(message);
   message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  if (save && !loading) {
+    compassSession.messages.push({
+      role,
+      content,
+      createdAt: new Date().toISOString(),
+    });
+    saveSession();
+  }
+
+  return message;
 }
 
-function askCurrentQuestion() {
-  if (!visitorResponse || !questionLabel || !conversationStatus) return;
-
-  const step = compassSteps[currentStep];
-  if (!step) return;
-
-  addMessage("compass", step.question);
-  questionLabel.textContent = `Your response to: ${step.question}`;
-  visitorResponse.value = "";
-  visitorResponse.placeholder = step.placeholder;
-  conversationStatus.textContent = `Question ${currentStep + 1} of ${compassSteps.length}.`;
-  visitorResponse.focus({ preventScroll: true });
+function renderMessages() {
+  if (!conversationLog) return;
+  conversationLog.innerHTML = "";
+  compassSession.messages.forEach((message) => {
+    addMessage(message.role, message.content, { save: false });
+  });
 }
 
-function startCompassConversation() {
-  currentStep = 0;
-  compassResponses = {};
+function setBusy(isBusy, label = "Compass is preparing a response...") {
+  if (conversationForm) conversationForm.classList.toggle("is-busy", isBusy);
+  if (visitorResponse) visitorResponse.disabled = isBusy;
+  if (conversationForm?.querySelector("button[type='submit']")) {
+    conversationForm.querySelector("button[type='submit']").disabled = isBusy;
+  }
+  if (prepareSummary) prepareSummary.disabled = isBusy || compassSession.messages.length < 2;
+  if (conversationStatus) conversationStatus.textContent = isBusy ? label : "";
+}
 
-  if (conversationLog) conversationLog.innerHTML = "";
-  if (summaryReview) summaryReview.hidden = true;
-  if (handoverPanel) handoverPanel.hidden = true;
-  if (conversationForm) conversationForm.hidden = false;
+async function callCompass(action, extra = {}) {
+  const response = await fetch(`${API_BASE}/api/compass`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      sessionId: compassSession.id,
+      action,
+      messages: compassSession.messages,
+      ...extra,
+    }),
+  });
 
-  addMessage(
-    "compass",
-    "Hello, I am Compass.\n\nBefore your conversation with Ben, I will help you organise what is happening and create a clear starting point.\n\nYou do not need to have every answer. We will simply begin with where things are right now."
-  );
-  addMessage(
-    "compass",
-    "This is not advice or diagnosis. Ben Ryan will personally review the summary before your conversation, and you control what is shared."
-  );
-  askCurrentQuestion();
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.error || "Compass could not respond just now.");
+  }
+
+  return response.json();
+}
+
+async function startCompass() {
+  if (!conversationLog || !conversationForm) return;
+
+  renderMessages();
+
+  if (compassSession.summary) {
+    renderSummary(compassSession.summary);
+  }
+
+  if (compassSession.messages.length) {
+    if (questionLabel) questionLabel.textContent = "Message Compass";
+    if (visitorResponse) {
+      visitorResponse.placeholder = "Add anything else you would like Compass to understand.";
+    }
+    if (prepareSummary) prepareSummary.disabled = false;
+    return;
+  }
+
+  setBusy(true, "Compass is opening the conversation...");
+  const loading = addMessage("compass", "Opening the conversation...", { save: false, loading: true });
+
+  try {
+    const data = await callCompass("start");
+    loading?.remove();
+    addMessage("compass", data.reply);
+    if (questionLabel) questionLabel.textContent = "Message Compass";
+    if (visitorResponse) {
+      visitorResponse.placeholder = "Start with what prompted you to reach out today.";
+      visitorResponse.focus({ preventScroll: true });
+    }
+  } catch (error) {
+    loading?.remove();
+    addMessage(
+      "compass",
+      "Compass could not connect to the secure backend just now. Please try again in a moment, or use the booking step below to contact Ben directly.",
+      { save: false }
+    );
+    if (conversationStatus) conversationStatus.textContent = error.message;
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function sendVisitorMessage(message) {
+  addMessage("visitor", message);
+  if (prepareSummary) prepareSummary.disabled = false;
+  setBusy(true);
+  const loading = addMessage("compass", "Listening carefully...", { save: false, loading: true });
+
+  try {
+    const data = await callCompass("chat");
+    loading?.remove();
+    addMessage("compass", data.reply);
+    if (prepareSummary) {
+      prepareSummary.hidden = false;
+      prepareSummary.disabled = false;
+    }
+    if (data.stage === "ready_for_summary" && conversationStatus) {
+      conversationStatus.textContent = "Compass has enough context to prepare a handover summary when you are ready.";
+    }
+  } catch (error) {
+    loading?.remove();
+    addMessage(
+      "compass",
+      "Compass could not respond from the secure backend just now. Your message is still here in this browser session.",
+      { save: false }
+    );
+    if (conversationStatus) conversationStatus.textContent = error.message;
+  } finally {
+    setBusy(false);
+  }
 }
 
 function summarySection(title, text) {
@@ -142,143 +215,56 @@ function summarySection(title, text) {
   `;
 }
 
-function detectThemes(responses) {
-  const combined = Object.values(responses).join(" ").toLowerCase();
-  const rules = [
-    {
-      label: "Competing priorities and decision pressure",
-      terms: ["decision", "priority", "priorities", "urgent", "pressure", "overwhelmed", "stuck"],
-    },
-    {
-      label: "People, team, or leadership impacts",
-      terms: ["team", "staff", "people", "culture", "leadership", "owner", "family"],
-    },
-    {
-      label: "Systems, process, or operational friction",
-      terms: ["system", "process", "operation", "workflow", "admin", "accountability", "role"],
-    },
-    {
-      label: "Financial, cash flow, or sustainability concerns",
-      terms: ["cash", "finance", "financial", "cost", "margin", "debt", "profit"],
-    },
-    {
-      label: "Change, AI, or future readiness",
-      terms: ["change", "ai", "automation", "technology", "future", "tool", "digital"],
-    },
-  ];
+function renderSummary(summary) {
+  if (!summaryReview || !managedSummary || !managedSummaryCard) return;
 
-  const themes = rules
-    .filter((rule) => rule.terms.some((term) => combined.includes(term)))
-    .map((rule) => rule.label);
-
-  if (themes.length === 0) {
-    themes.push(
-      "Clarifying what matters most",
-      "Understanding the practical next step",
-      "Preparing for a calm and useful conversation"
-    );
-  }
-
-  return themes.slice(0, 4);
-}
-
-function buildQuestionsForBen(responses) {
-  const questions = [
-    "What needs to be understood before any action is considered?",
-    "What feels most important to address first, and what can wait?",
-    "What would make the next step practical, responsible, and respectful of the people involved?",
-  ];
-
-  if (responses.success) {
-    questions.push("What would help move the business closer to the improvement the owner described?");
-  }
-
-  return questions;
-}
-
-function buildPlainSummary(responses) {
-  const themes = detectThemes(responses);
-  const questions = buildQuestionsForBen(responses);
-
-  return [
-    "Compass Handover Summary",
-    "",
-    "Prepared for conversation with Ben Ryan",
-    "",
-    "What the business owner is carrying",
-    "It sounds like this is what prompted the reach-out:",
-    responses.prompted || "Not provided yet.",
-    "",
-    "What seems unclear, heavy, or urgent",
-    "I am hearing this as an important pressure point:",
-    responses.challenge || "Not provided yet.",
-    "",
-    "How it is affecting the owner, team, or business",
-    responses.impact || "Not provided yet.",
-    "",
-    "Desired direction over the next few months",
-    responses.success || "Not provided yet.",
-    "",
-    "Themes that emerged",
-    ...themes.map((theme) => `- ${theme}`),
-    "",
-    "Questions worth exploring with Ben",
-    ...questions.map((question) => `- ${question}`),
-    "",
-    "Anything the business owner wants Ben to understand",
-    responses.understand || "Not provided yet.",
-    "",
-    "Original responses",
-    `1. What prompted you to reach out today?\n${responses.prompted || "Not provided yet."}`,
-    "",
-    `2. What feels most important or challenging right now?\n${responses.challenge || "Not provided yet."}`,
-    "",
-    `3. How is this affecting you, your team, or the business?\n${responses.impact || "Not provided yet."}`,
-    "",
-    `4. If things improved over the next few months, what would you hope to see?\n${responses.success || "Not provided yet."}`,
-    "",
-    `5. What would you like Ben to understand before your conversation?\n${responses.understand || "Not provided yet."}`,
-    "",
-    "Note: This summary is preparation only. It is not advice, diagnosis, analysis, or a decision.",
-  ].join("\n");
-}
-
-function createSummary() {
-  if (!managedSummaryCard || !managedSummary || !summaryReview || !conversationForm) return;
-
-  const themes = detectThemes(compassResponses).map((theme) => `- ${theme}`).join("\n");
-  const questions = buildQuestionsForBen(compassResponses).map((question) => `- ${question}`).join("\n");
+  const themes = Array.isArray(summary.themes) ? summary.themes.map((theme) => `- ${theme}`).join("\n") : "";
+  const questions = Array.isArray(summary.questionsForBen)
+    ? summary.questionsForBen.map((question) => `- ${question}`).join("\n")
+    : "";
 
   managedSummaryCard.innerHTML = [
-    summarySection(
-      "What the business owner is carrying",
-      `It sounds like this is what prompted the reach-out:\n${compassResponses.prompted || "Not provided yet."}`
-    ),
-    summarySection(
-      "What seems unclear, heavy, or urgent",
-      `I am hearing this as an important pressure point:\n${compassResponses.challenge || "Not provided yet."}`
-    ),
+    summarySection("What the business owner is carrying", summary.businessOwnerCarrying),
+    summarySection("What seems unclear, heavy, or urgent", summary.unclearHeavyOrUrgent),
     summarySection("Themes that emerged", themes),
     summarySection("Questions worth exploring with Ben", questions),
-    summarySection("What Ben should understand", compassResponses.understand),
+    summarySection("What Ben should understand", summary.whatBenShouldUnderstand),
   ].join("");
 
-  managedSummary.value = buildPlainSummary(compassResponses);
-  conversationForm.hidden = true;
+  managedSummary.value = summary.summaryText || "";
   summaryReview.hidden = false;
-  updateMailLinks();
+  updateBookingLink();
   summaryReview.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function prepareHandoverSummary() {
+  if (compassSession.messages.length < 2) {
+    if (conversationStatus) {
+      conversationStatus.textContent = "Share a little with Compass first, then prepare the handover summary.";
+    }
+    return;
+  }
+
+  setBusy(true, "Compass is preparing your handover summary...");
+
+  try {
+    const data = await callCompass("summary");
+    compassSession.summary = data.summary;
+    saveSession();
+    renderSummary(data.summary);
+    if (summaryStatus) {
+      summaryStatus.textContent = "Summary prepared. Nothing has been sent.";
+    }
+  } catch (error) {
+    if (conversationStatus) conversationStatus.textContent = error.message;
+  } finally {
+    setBusy(false);
+  }
 }
 
 function getHandoverDetails() {
   if (!handoverForm) {
-    return {
-      name: "",
-      email: "",
-      business: "",
-      phone: "",
-      time: "",
-    };
+    return { name: "", email: "", business: "", phone: "", time: "" };
   }
 
   return {
@@ -290,10 +276,12 @@ function getHandoverDetails() {
   };
 }
 
-function buildEmailBody() {
+function buildBookingBody() {
   const details = getHandoverDetails();
-  const detailLines = [
-    "Conversation Details",
+  return [
+    "Hi Ben,",
+    "",
+    "I would like to book a conversation.",
     "",
     `Name: ${details.name || "Not provided"}`,
     `Email: ${details.email || "Not provided"}`,
@@ -301,60 +289,104 @@ function buildEmailBody() {
     `Preferred contact number: ${details.phone || "Not provided"}`,
     `Preferred conversation timing: ${details.time || "Not provided"}`,
     "",
+    "Compass summary:",
+    managedSummary?.value || "Not provided",
   ].join("\n");
-
-  return `${detailLines}${managedSummary?.value || ""}`;
 }
 
-function updateMailLinks() {
-  if (!emailHandover || !bookBen) return;
-
+function updateBookingLink() {
+  if (!bookBen) return;
   const details = getHandoverDetails();
   const subjectSuffix = details.business || details.name ? ` - ${details.business || details.name}` : "";
-  const body = buildEmailBody();
-
-  emailHandover.href = `mailto:ben@wfcaust.com.au?subject=${encodeURIComponent(
-    `Compass handover${subjectSuffix}`
-  )}&body=${encodeURIComponent(body)}`;
-
   bookBen.href = `mailto:ben@wfcaust.com.au?subject=${encodeURIComponent(
     `Book a conversation with Ben Ryan${subjectSuffix}`
-  )}&body=${encodeURIComponent(body)}`;
+  )}&body=${encodeURIComponent(buildBookingBody())}`;
+}
+
+async function submitHandover() {
+  if (!managedSummary?.value.trim()) {
+    if (handoverStatus) handoverStatus.textContent = "Prepare or edit the summary before sending.";
+    return;
+  }
+
+  if (sendHandover) {
+    sendHandover.disabled = true;
+    sendHandover.textContent = "Sending...";
+  }
+  if (handoverStatus) {
+    handoverStatus.textContent = "Preparing the handover for Ben. Nothing leaves your browser until this step.";
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/api/handover`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionId: compassSession.id,
+        contact: getHandoverDetails(),
+        summaryText: managedSummary.value,
+        messages: compassSession.messages,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.error || "Compass could not send the handover just now.");
+    }
+
+    const data = await response.json();
+
+    if (data.sent) {
+      if (handoverStatus) {
+        handoverStatus.textContent =
+          "Summary sent to Ben. A copy has been sent to the visitor email if one was provided.";
+      }
+      return;
+    }
+
+    if (data.mailto) {
+      window.location.href = data.mailto;
+      if (handoverStatus) {
+        handoverStatus.textContent = "Your email app has opened the handover so you can review it before sending.";
+      }
+    }
+  } catch (error) {
+    if (handoverStatus) handoverStatus.textContent = error.message;
+  } finally {
+    if (sendHandover) {
+      sendHandover.disabled = false;
+      sendHandover.textContent = "Send Summary To Ben";
+    }
+  }
 }
 
 if (conversationForm && visitorResponse) {
   conversationForm.addEventListener("submit", (event) => {
     event.preventDefault();
+    const message = visitorResponse.value.trim();
 
-    const step = compassSteps[currentStep];
-    const response = visitorResponse.value.trim();
-
-    if (!step || !response) {
-      if (conversationStatus) {
-        conversationStatus.textContent = "A short response is enough before we continue.";
-      }
+    if (!message) {
+      if (conversationStatus) conversationStatus.textContent = "A short message is enough before we continue.";
       return;
     }
 
-    compassResponses[step.key] = response;
-    addMessage("visitor", response);
-    addMessage("compass", step.acknowledgement);
-
-    currentStep += 1;
-
-    if (currentStep < compassSteps.length) {
-      window.setTimeout(askCurrentQuestion, 350);
-    } else {
-      if (conversationStatus) {
-        conversationStatus.textContent = "Compass is preparing your handover summary.";
-      }
-      window.setTimeout(createSummary, 450);
-    }
+    visitorResponse.value = "";
+    sendVisitorMessage(message);
   });
 }
 
 if (restartConversation) {
-  restartConversation.addEventListener("click", startCompassConversation);
+  restartConversation.addEventListener("click", () => {
+    sessionStorage.removeItem(SESSION_KEY);
+    compassSession = loadSession();
+    if (summaryReview) summaryReview.hidden = true;
+    if (handoverPanel) handoverPanel.hidden = true;
+    startCompass();
+  });
+}
+
+if (prepareSummary) {
+  prepareSummary.addEventListener("click", prepareHandoverSummary);
 }
 
 if (copyManagedSummary && managedSummary) {
@@ -378,19 +410,29 @@ if (copyManagedSummary && managedSummary) {
 if (continueToHandover && handoverPanel) {
   continueToHandover.addEventListener("click", () => {
     handoverPanel.hidden = false;
-    updateMailLinks();
+    updateBookingLink();
     handoverPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
 
 if (managedSummary) {
-  managedSummary.addEventListener("input", updateMailLinks);
+  managedSummary.addEventListener("input", () => {
+    if (compassSession.summary) {
+      compassSession.summary.summaryText = managedSummary.value;
+      saveSession();
+    }
+    updateBookingLink();
+  });
 }
 
 if (handoverForm) {
-  handoverForm.addEventListener("input", updateMailLinks);
+  handoverForm.addEventListener("input", updateBookingLink);
+}
+
+if (sendHandover) {
+  sendHandover.addEventListener("click", submitHandover);
 }
 
 if (conversationLog && conversationForm) {
-  startCompassConversation();
+  startCompass();
 }
