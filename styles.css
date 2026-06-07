@@ -786,6 +786,94 @@ p + p {
   box-shadow: var(--shadow);
 }
 
+.conversation-card {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: clamp(1rem, 3vw, 1.45rem);
+  box-shadow: var(--shadow);
+}
+
+.conversation-log {
+  display: grid;
+  gap: 0.85rem;
+  max-height: 620px;
+  overflow: auto;
+  padding: 0.35rem 0.35rem 0.75rem;
+  scroll-padding-block: 1rem;
+}
+
+.message {
+  width: min(86%, 680px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  background: rgba(238, 242, 236, 0.56);
+}
+
+.message.compass {
+  justify-self: start;
+  border-left: 4px solid var(--sage);
+}
+
+.message.visitor {
+  justify-self: end;
+  border-color: rgba(183, 111, 69, 0.28);
+  border-right: 4px solid var(--clay);
+  background: rgba(234, 216, 201, 0.28);
+}
+
+.speaker {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.message p {
+  color: var(--ink-soft);
+}
+
+.message p + p {
+  margin-top: 0.65rem;
+}
+
+.conversation-response {
+  display: grid;
+  gap: 0.8rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+
+.conversation-response textarea {
+  min-height: 150px;
+  background: var(--paper);
+}
+
+.conversation-controls {
+  margin-top: 0;
+}
+
+.summary-review,
+.handover-panel {
+  scroll-margin-top: 6rem;
+}
+
+.handover-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.handover-note {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
 .field-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -972,6 +1060,10 @@ textarea:focus {
 
   .field-row {
     grid-template-columns: 1fr;
+  }
+
+  .message {
+    width: 100%;
   }
 }
 

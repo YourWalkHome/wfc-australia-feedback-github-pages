@@ -13,8 +13,11 @@ The preview is intended for a small trusted review panel. It is not the final pu
 - Does the site show what clarity enables: better decisions, stronger alignment, and responsible progress?
 - Is the Human + AI section practical enough without becoming AI hype?
 - Does the site feel practical without becoming salesy?
-- Does the Compass preparation experience help a business owner feel heard, respected, and better prepared?
-- Does Compass clearly avoid advice, diagnosis, and replacing the human conversation with Ben Ryan?
+- Does the Compass-managed Start a Conversation page help a business owner feel heard, respected, and better prepared?
+- Does Compass feel like a bridge to Ben Ryan rather than a barrier?
+- Does the one-question-at-a-time flow feel calm and human rather than like a form or chatbot gimmick?
+- Does the editable handover summary feel useful without becoming advice, diagnosis, or analysis?
+- Is it clear that nothing is sent automatically and the visitor controls what is shared?
 - What feels unclear, too soft, too heavy, or missing?
 
 The goal is not a perfect website yet. The goal is a trusted first conversation.
