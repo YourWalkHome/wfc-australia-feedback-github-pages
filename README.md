@@ -7,11 +7,12 @@ The preview is intended for a small trusted review panel. It is not the final pu
 ## Review Focus
 
 - Does the site feel calm, clear, and trustworthy?
-- Does "Reduce the noise. See the next step clearly." land well?
-- Is The Off-Ramp concept useful and understandable?
+- Does "Understand clearly. Decide confidently. Move forward responsibly." land well?
+- Does The Off-Ramp concept feel useful without being overused?
+- Are the practical business outcomes visible enough?
+- Does the site show what clarity enables: better decisions, stronger alignment, and responsible progress?
+- Is the Human + AI section practical enough without becoming AI hype?
 - Does the site feel practical without becoming salesy?
-- Is the Human + AI section positioned appropriately?
 - What feels unclear, too soft, too heavy, or missing?
 
 The goal is not a perfect website yet. The goal is a trusted first conversation.
-

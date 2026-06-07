@@ -384,6 +384,24 @@ p + p {
   line-height: 1.25;
 }
 
+.outcome-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1.35rem 0;
+}
+
+.outcome-list span {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink);
+  padding: 0.75rem 0.85rem;
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
 .card-grid {
   display: grid;
   gap: 1rem;
@@ -793,7 +811,8 @@ textarea:focus {
 
   .card-grid.three,
   .offer-grid,
-  .off-ramp-steps {
+  .off-ramp-steps,
+  .outcome-list {
     grid-template-columns: 1fr;
   }
 
