@@ -25,6 +25,7 @@ module.exports = async function handler(req, res) {
     const reply = await createCompassReply({ action, messages });
     jsonResponse(res, 200, { type: "reply", ...reply });
   } catch (error) {
+    console.error("Compass API error:", error);
     jsonResponse(res, 500, {
       error: "Compass could not respond just now.",
       detail: process.env.NODE_ENV === "production" ? undefined : error.message,

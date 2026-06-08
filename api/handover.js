@@ -107,6 +107,7 @@ module.exports = async function handler(req, res) {
       mailto: `mailto:${benEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`,
     });
   } catch (error) {
+    console.error("Compass handover error:", error);
     jsonResponse(res, 500, {
       error: "Compass could not send the handover just now.",
       detail: process.env.NODE_ENV === "production" ? undefined : error.message,
