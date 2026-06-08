@@ -27,7 +27,7 @@ See `VERCEL-COMPASS-MVP-STEPS.txt` for setup steps.
 - Does The Off-Ramp concept feel useful without being overused?
 - Are the practical business outcomes visible enough?
 - Does the site show what clarity enables: better decisions, stronger alignment, and responsible progress?
-- Is the Human + AI section practical enough without becoming AI hype?
+- Is the Ben + Compass section practical enough without becoming AI hype?
 - Does the site feel practical without becoming salesy?
 - Do visitors understand who Ben Ryan is and why his role matters?
 - Do visitors understand who Compass is and what role it plays?
@@ -37,7 +37,7 @@ See `VERCEL-COMPASS-MVP-STEPS.txt` for setup steps.
 - Does Compass ask thoughtful follow-up questions without becoming long, heavy, or directive?
 - Does the editable handover summary feel useful without becoming advice, diagnosis, or analysis?
 - Is it clear that nothing is sent automatically and the visitor controls what is shared?
-- Does the secure backend approach feel appropriate for a real WFC human-AI bridge?
+- Does the secure backend approach feel appropriate for a real WFC Ben + Compass bridge?
 - What feels unclear, too soft, too heavy, or missing?
 
 The goal is not a perfect website yet. The goal is a trusted first conversation.

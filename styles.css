@@ -452,6 +452,10 @@ p + p {
   font-size: clamp(1.35rem, 2vw, 1.85rem);
 }
 
+.profile-card h2 {
+  font-size: clamp(1.45rem, 2.3vw, 2rem);
+}
+
 .profile-card p:not(.eyebrow) {
   color: var(--ink-soft);
 }
@@ -529,6 +533,58 @@ p + p {
   color: var(--ink-soft);
   font-size: 0.95rem;
   line-height: 1.55;
+}
+
+.contact-relationship {
+  align-items: stretch;
+}
+
+.contact-collaboration {
+  margin-top: 1rem;
+}
+
+.compact-start {
+  padding-top: clamp(3.5rem, 7vw, 5rem);
+}
+
+.compass-experience.wide {
+  max-width: 940px;
+  margin-inline: auto;
+}
+
+.start-heading {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.start-heading h2,
+.start-heading p {
+  margin-inline: auto;
+}
+
+.trust-marker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.trust-marker span {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--clay);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.7rem 0.8rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.trust-marker span::before {
+  content: "\2713";
+  margin-right: 0.35rem;
+  color: var(--sage-dark);
+  font-weight: 850;
 }
 
 .card-grid {
@@ -1223,7 +1279,8 @@ textarea:focus {
   .ben-card,
   .collaboration-strip,
   .expectation-grid,
-  .trust-mini-grid {
+  .trust-mini-grid,
+  .trust-marker {
     grid-template-columns: 1fr;
   }
 
