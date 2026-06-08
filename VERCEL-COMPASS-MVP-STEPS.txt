@@ -26,6 +26,7 @@ Recommended MVP path:
    Then add:
    RESEND_API_KEY = your Resend API key
    HANDOVER_FROM_EMAIL = Compass <your-verified-sender@yourdomain.com>
+   You may use FROM_EMAIL instead of HANDOVER_FROM_EMAIL if preferred.
 
 6. Deploy.
 

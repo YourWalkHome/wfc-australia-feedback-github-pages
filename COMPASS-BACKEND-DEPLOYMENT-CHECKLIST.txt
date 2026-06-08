@@ -1,0 +1,97 @@
+Compass Backend Deployment Checklist
+
+Objective:
+Deploy the WFC Australia Compass Conversation Experience so Compass becomes the live first point of contact on Start a Conversation.
+
+Current MVP:
+- Chat-style Compass interface
+- Secure /api/compass endpoint
+- Secure /api/handover endpoint
+- Browser session memory during the visit
+- Structured handover summary generation
+- Visitor review/edit before sharing
+- Email handover support
+- Vercel deployment architecture
+
+1. Push Repository
+- Open GitHub Desktop.
+- Select wfc-australia-feedback-github-pages.
+- Press Push Origin.
+
+2. Create Vercel Project
+- Log into https://vercel.com.
+- Create a new project.
+- Import wfc-australia-feedback-github-pages from GitHub.
+
+3. Configure Environment Variables
+Required:
+- OPENAI_API_KEY
+
+Recommended:
+- OPENAI_MODEL = gpt-4.1-mini
+- BEN_EMAIL = ben@wfcaust.com.au
+
+Optional for direct email handover:
+- RESEND_API_KEY
+- HANDOVER_FROM_EMAIL or FROM_EMAIL
+
+Do not hardcode API keys into website files.
+
+4. Deploy
+- Allow Vercel to complete the first deployment.
+- Confirm the build succeeds.
+- Confirm /api/compass is available.
+- Confirm /api/handover is available.
+
+5. Test Compass
+- Visit /contact.html.
+- Send a message to Compass.
+- Confirm Compass responds dynamically.
+- Confirm follow-up questions work.
+- Confirm session memory persists during the browser session.
+- Confirm responses feel conversational, calm, and WFC-aligned.
+
+6. Test Handover Summary
+Complete a test conversation and prepare a summary.
+
+Confirm the summary includes:
+- What the business owner is carrying
+- What seems unclear, heavy, or urgent
+- Themes that emerged
+- Questions worth exploring with Ben
+- Anything the business owner wants Ben to understand
+
+Confirm the visitor can review, edit, and approve before anything is shared.
+
+7. Test Email Handover
+- Confirm Ben receives the summary when email sending is configured.
+- Confirm the visitor receives a copy when their email is provided.
+- Confirm no information is sent without visitor approval.
+- If email sending is not configured, confirm an email draft opens instead.
+
+8. Test Booking Process
+- Confirm the visitor can move from Compass conversation to booking.
+- Confirm Ben receives context before the meeting.
+- Confirm the visitor receives booking confirmation through the chosen booking process.
+
+Compass Behaviour Validation:
+Compass should listen, reflect, organise thoughts, identify themes, ask thoughtful follow-up questions, and prepare conversations.
+
+Compass should not diagnose, prescribe solutions, provide consulting advice, replace Ben, or create dependency.
+
+Visitor Experience Test:
+Would a business owner feel heard, respected, understood, and prepared?
+
+Would they feel:
+"Compass helped me organise my thinking before speaking with Ben."
+
+If yes, the experience is working.
+
+North Star:
+Compass is not a chatbot.
+Compass is not a sales funnel.
+Compass is not a gatekeeper.
+Compass is the bridge between uncertainty and understanding.
+
+AI helps create the conditions for a better human conversation.
+One honest step at a time.

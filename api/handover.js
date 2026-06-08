@@ -69,11 +69,12 @@ module.exports = async function handler(req, res) {
     const subjectSuffix = clean(contact.business || contact.name, 140);
     const subject = `Compass handover${subjectSuffix ? ` - ${subjectSuffix}` : ""}`;
     const benEmail = process.env.BEN_EMAIL || "ben@wfcaust.com.au";
+    const fromEmail = process.env.HANDOVER_FROM_EMAIL || process.env.FROM_EMAIL;
 
-    if (process.env.RESEND_API_KEY && process.env.HANDOVER_FROM_EMAIL) {
+    if (process.env.RESEND_API_KEY && fromEmail) {
       await sendWithResend({
         to: benEmail,
-        from: process.env.HANDOVER_FROM_EMAIL,
+        from: fromEmail,
         subject,
         body: emailBody,
         replyTo: clean(contact.email, 200) || undefined,
@@ -82,7 +83,7 @@ module.exports = async function handler(req, res) {
       if (clean(contact.email, 200)) {
         await sendWithResend({
           to: clean(contact.email, 200),
-          from: process.env.HANDOVER_FROM_EMAIL,
+          from: fromEmail,
           subject: "Your Compass summary for Ben Ryan",
           body: [
             "Thanks for preparing this with Compass.",
