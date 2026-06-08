@@ -11,22 +11,25 @@ function buildEmailBody({ contact, summaryText, messages }) {
     .join("\n\n");
 
   return [
-    "Compass Handover",
+    "Compass Handover Summary",
     "",
-    "Contact details",
+    "Contact Details",
     `Name: ${clean(details.name, 200) || "Not provided"}`,
-    `Email: ${clean(details.email, 200) || "Not provided"}`,
     `Business or organisation: ${clean(details.business, 200) || "Not provided"}`,
+    `Email: ${clean(details.email, 200) || "Not provided"}`,
     `Preferred contact number: ${clean(details.phone, 100) || "Not provided"}`,
     `Preferred conversation timing: ${clean(details.time, 200) || "Not provided"}`,
     "",
-    "Editable Compass summary",
+    "Compass Reflection Summary",
     clean(summaryText, 12000) || "Not provided",
     "",
-    "Conversation transcript",
+    "Conversation Transcript",
     transcript || "Not provided",
     "",
-    "Note: This summary is preparation only. It is not advice, diagnosis, analysis, or a decision.",
+    "Compass Note",
+    "This summary is preparation only.",
+    "It is not advice, diagnosis, analysis, or a recommendation.",
+    "It is intended to help Ben Ryan begin the conversation from a clearer starting point.",
   ].join("\n");
 }
 

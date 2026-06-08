@@ -29,6 +29,9 @@ See `VERCEL-COMPASS-MVP-STEPS.txt` for setup steps.
 - Does the site show what clarity enables: better decisions, stronger alignment, and responsible progress?
 - Is the Human + AI section practical enough without becoming AI hype?
 - Does the site feel practical without becoming salesy?
+- Do visitors understand who Ben Ryan is and why his role matters?
+- Do visitors understand who Compass is and what role it plays?
+- Does the Ben + Compass relationship feel transparent, trustworthy, and useful?
 - Does the API-powered Compass Start a Conversation page help a business owner feel heard, respected, and better prepared?
 - Does Compass feel like a bridge to Ben Ryan rather than a barrier?
 - Does Compass ask thoughtful follow-up questions without becoming long, heavy, or directive?

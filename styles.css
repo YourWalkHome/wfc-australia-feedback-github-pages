@@ -424,6 +424,113 @@ p + p {
   line-height: 1.25;
 }
 
+.relationship-section {
+  background:
+    linear-gradient(180deg, rgba(251, 250, 246, 1), rgba(238, 242, 236, 0.72)),
+    var(--paper);
+}
+
+.relationship-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 1rem;
+}
+
+.profile-card {
+  display: grid;
+  gap: 1.1rem;
+  align-items: start;
+  min-height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  box-shadow: 0 8px 24px rgba(36, 49, 43, 0.05);
+}
+
+.profile-card h3 {
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+}
+
+.profile-card p:not(.eyebrow) {
+  color: var(--ink-soft);
+}
+
+.profile-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  object-fit: cover;
+  object-position: center 28%;
+}
+
+.ben-card {
+  grid-template-columns: minmax(180px, 0.56fr) minmax(0, 1fr);
+}
+
+.compass-card {
+  align-content: start;
+}
+
+.compass-symbol {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sage-dark);
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 850;
+}
+
+.collaboration-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.expectation-grid,
+.trust-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.collaboration-strip div,
+.expectation-grid article,
+.trust-mini-grid article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.78);
+  padding: 1rem;
+}
+
+.collaboration-strip span {
+  display: inline-block;
+  margin-bottom: 0.45rem;
+  color: var(--clay);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.collaboration-strip strong {
+  display: block;
+  font-size: 1.02rem;
+}
+
+.collaboration-strip p,
+.expectation-grid p,
+.trust-mini-grid p {
+  margin-top: 0.45rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
 .card-grid {
   display: grid;
   gap: 1rem;
@@ -688,6 +795,29 @@ p + p {
   color: var(--ink-soft);
 }
 
+.founder-story {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.founder-photo img {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  border-radius: var(--radius);
+  object-fit: cover;
+  object-position: center 28%;
+  box-shadow: var(--shadow);
+}
+
+.founder-copy p:not(.eyebrow) {
+  max-width: 780px;
+  margin-top: 1rem;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
 .contact-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
@@ -734,6 +864,35 @@ p + p {
   color: var(--ink);
   padding: 0.65rem 0.8rem;
   font-weight: 750;
+}
+
+.conversation-context {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+  margin-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.2rem;
+}
+
+.conversation-context img {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.conversation-context h3 {
+  font-size: 1rem;
+}
+
+.conversation-context p {
+  margin-top: 0.25rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .contact-note p:not(.eyebrow) {
@@ -1055,7 +1214,16 @@ textarea:focus {
   .two-column,
   .contact-layout,
   .compass-layout,
+  .founder-story,
+  .relationship-grid,
   .service-list article {
+    grid-template-columns: 1fr;
+  }
+
+  .ben-card,
+  .collaboration-strip,
+  .expectation-grid,
+  .trust-mini-grid {
     grid-template-columns: 1fr;
   }
 
