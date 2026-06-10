@@ -126,7 +126,6 @@ function buildHandoverData({ sessionId, contact, summary, summaryText, messages,
       business: clean(details.business, 200) || "Not provided",
       email: clean(details.email, 200) || "Not provided",
       phone: clean(details.phone, 100) || "Not provided",
-      time: clean(details.time, 200) || "Not provided",
     },
     replyTo: clean(details.email, 200),
     approvedSummary: approvedSummary || "Not provided",
@@ -215,7 +214,6 @@ function buildHtmlEmail(data) {
                       ${metaRow("Organisation", data.contact.business)}
                       ${metaRow("Email", data.contact.email)}
                       ${metaRow("Phone", data.contact.phone)}
-                      ${metaRow("Preferred Time", data.contact.time)}
                     </table>
                   `)}
 
@@ -274,7 +272,6 @@ function buildTextEmail(data) {
     `Organisation: ${data.contact.business}`,
     `Email: ${data.contact.email}`,
     `Phone: ${data.contact.phone}`,
-    `Preferred Conversation Time: ${data.contact.time}`,
     "",
     "Compass Summary",
     data.approvedSummary,

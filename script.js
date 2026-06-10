@@ -273,7 +273,6 @@ function getHandoverDetails() {
     email: formValue(handoverForm, "handover-email"),
     business: formValue(handoverForm, "handover-business"),
     phone: formValue(handoverForm, "handover-phone"),
-    time: formValue(handoverForm, "handover-time"),
     includeTranscript: new FormData(handoverForm).get("handover-include-transcript") === "on",
   };
 }
