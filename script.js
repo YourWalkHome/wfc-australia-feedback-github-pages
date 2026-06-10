@@ -28,6 +28,7 @@ const bookBen = document.querySelector("#book-ben");
 const handoverStatus = document.querySelector("#handover-status");
 
 const API_BASE = window.COMPASS_API_BASE || (window.location.protocol === "file:" ? "http://localhost:3000" : "");
+const CALENDLY_BOOKING_URL = "https://calendly.com/ben-bennyland/30min";
 const SESSION_KEY = "wfc-compass-session";
 
 let compassSession = loadSession();
@@ -276,31 +277,11 @@ function getHandoverDetails() {
   };
 }
 
-function buildBookingBody() {
-  const details = getHandoverDetails();
-  return [
-    "Hi Ben,",
-    "",
-    "I would like to book a conversation.",
-    "",
-    `Name: ${details.name || "Not provided"}`,
-    `Email: ${details.email || "Not provided"}`,
-    `Business or organisation: ${details.business || "Not provided"}`,
-    `Preferred contact number: ${details.phone || "Not provided"}`,
-    `Preferred conversation timing: ${details.time || "Not provided"}`,
-    "",
-    "Compass summary:",
-    managedSummary?.value || "Not provided",
-  ].join("\n");
-}
-
 function updateBookingLink() {
   if (!bookBen) return;
-  const details = getHandoverDetails();
-  const subjectSuffix = details.business || details.name ? ` - ${details.business || details.name}` : "";
-  bookBen.href = `mailto:ben@wfcaust.com.au?subject=${encodeURIComponent(
-    `Book a conversation with Ben Ryan${subjectSuffix}`
-  )}&body=${encodeURIComponent(buildBookingBody())}`;
+  bookBen.href = CALENDLY_BOOKING_URL;
+  bookBen.target = "_blank";
+  bookBen.rel = "noopener noreferrer";
 }
 
 async function submitHandover() {
