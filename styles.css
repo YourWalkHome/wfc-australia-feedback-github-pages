@@ -473,10 +473,14 @@ p + p {
   align-content: start;
 }
 
-.compass-symbol {
+.profile-card .compass-symbol {
   width: 72px;
   height: 72px;
+  aspect-ratio: 1;
   border-radius: 50%;
+  object-fit: contain;
+  object-position: center;
+  justify-self: start;
   box-shadow: 0 12px 26px rgba(36, 49, 43, 0.16);
 }
 
