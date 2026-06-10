@@ -93,18 +93,15 @@ textarea {
 }
 
 .brand-mark {
-  display: grid;
   width: 46px;
   height: 46px;
-  place-items: center;
   flex: 0 0 auto;
   border: 1px solid rgba(65, 87, 69, 0.28);
   border-radius: 50%;
   background: var(--sage-dark);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  padding: 0.2rem;
+  object-fit: contain;
+  object-position: center;
 }
 
 .brand strong {
@@ -477,15 +474,10 @@ p + p {
 }
 
 .compass-symbol {
-  display: grid;
   width: 72px;
   height: 72px;
-  place-items: center;
   border-radius: 50%;
-  background: var(--sage-dark);
-  color: #fff;
-  font-size: 1.35rem;
-  font-weight: 850;
+  box-shadow: 0 12px 26px rgba(36, 49, 43, 0.16);
 }
 
 .collaboration-strip {
@@ -897,10 +889,39 @@ p + p {
   gap: 0.9rem;
 }
 
-.footer-logo {
-  width: min(320px, 100%);
-  height: auto;
-  border-radius: var(--radius);
+.footer-brand-line {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.footer-mark {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.25rem;
+  object-fit: contain;
+  object-position: center;
+}
+
+.footer-brand-line strong,
+.footer-brand-line span {
+  display: block;
+}
+
+.footer-brand-line strong {
+  color: #fff;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.footer-brand-line span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .footer-connect {

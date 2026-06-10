@@ -1,0 +1,9 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Compass</title>
+  <desc id="desc">A simple compass mark for WFC Australia's Compass guide.</desc>
+  <circle cx="64" cy="64" r="58" fill="#415745"/>
+  <circle cx="64" cy="64" r="44" fill="none" stroke="#d8dfd5" stroke-width="3" opacity="0.75"/>
+  <path d="M76.5 20.5 66.8 67.6 51.5 107.5l9.7-47.1z" fill="#e6b187"/>
+  <path d="M76.5 20.5 61.2 60.4 51.5 107.5l15.3-39.9z" fill="#fbfaf6" opacity="0.92"/>
+  <circle cx="64" cy="64" r="8" fill="#24312b" stroke="#fbfaf6" stroke-width="3"/>
+</svg>

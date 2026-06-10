@@ -175,7 +175,7 @@ function card(content, extraStyle = "") {
 }
 
 function buildHtmlEmail(data) {
-  const logoUrl = publicAssetUrl("assets/wfc-logo-wide.png");
+  const logoUrl = publicAssetUrl("assets/wfc-lantern-mark.png");
   const transcriptSection = data.includeTranscript
     ? card(`${sectionHeading("Full Conversation Transcript")}<div style="white-space:pre-wrap;color:${BRAND.inkSoft};font-size:14px;line-height:1.6;">${escapeHtml(data.transcript)}</div>`)
     : "";
@@ -189,7 +189,7 @@ function buildHtmlEmail(data) {
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:720px;">
             <tr>
               <td style="padding:22px 24px;background:${BRAND.sage};border-radius:10px 10px 0 0;color:#ffffff;">
-                <img src="${escapeHtml(logoUrl)}" width="240" alt="WFC Australia" style="display:block;max-width:240px;width:100%;height:auto;border:0;margin:0 0 18px;">
+                <img src="${escapeHtml(logoUrl)}" width="72" alt="WFC Australia" style="display:block;width:72px;height:72px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);padding:4px;margin:0 0 18px;">
                 <p style="margin:0 0 4px;color:#e6b187;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;">WFC Australia</p>
                 <h1 style="margin:0;color:#ffffff;font-size:26px;line-height:1.15;">${escapeHtml(data.title)}</h1>
               </td>
