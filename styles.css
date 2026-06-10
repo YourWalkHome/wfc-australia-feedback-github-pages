@@ -860,10 +860,10 @@ p + p {
 }
 
 .site-footer {
-  padding: 1.4rem 1rem;
-  background: var(--paper);
-  border-top: 1px solid var(--line);
-  color: var(--ink-soft);
+  padding: clamp(2rem, 5vw, 3rem) 1rem;
+  background: #18251f;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.72);
   font-size: 0.92rem;
 }
 
@@ -876,9 +876,63 @@ p + p {
 }
 
 .footer-inner a {
-  color: var(--ink);
+  color: #fff;
   font-weight: 750;
   text-decoration: none;
+}
+
+.footer-inner a:hover {
+  color: #e6b187;
+}
+
+.footer-expanded {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(240px, 0.28fr);
+  align-items: end;
+  gap: clamp(1.5rem, 5vw, 4rem);
+}
+
+.footer-brand-block {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.footer-logo {
+  width: min(320px, 100%);
+  height: auto;
+  border-radius: var(--radius);
+}
+
+.footer-connect {
+  display: grid;
+  gap: 0.55rem;
+  justify-items: end;
+  text-align: right;
+}
+
+.footer-label {
+  color: #e6b187;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+
+.footer-socials span {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .page-hero {
@@ -1420,6 +1474,19 @@ textarea:focus {
 
   .footer-inner {
     flex-direction: column;
+  }
+
+  .footer-expanded {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-connect {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .footer-socials {
+    justify-content: flex-start;
   }
 
   .field-row {

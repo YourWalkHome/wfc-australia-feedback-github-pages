@@ -11,6 +11,7 @@ const BRAND = {
   clay: "#b76f45",
   line: "#d8dfd5",
 };
+const DEFAULT_SITE_URL = "https://wfc-australia-feedback-github-pages.vercel.app";
 
 function clean(value, limit = 3000) {
   return String(value || "").trim().slice(0, limit);
@@ -23,6 +24,11 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function publicAssetUrl(assetPath) {
+  const base = clean(process.env.PUBLIC_SITE_URL || process.env.SITE_URL || DEFAULT_SITE_URL, 300).replace(/\/$/, "");
+  return `${base}/${assetPath.replace(/^\//, "")}`;
 }
 
 function cleanList(values, limit = 8) {
@@ -169,6 +175,7 @@ function card(content, extraStyle = "") {
 }
 
 function buildHtmlEmail(data) {
+  const logoUrl = publicAssetUrl("assets/wfc-logo-wide.png");
   const transcriptSection = data.includeTranscript
     ? card(`${sectionHeading("Full Conversation Transcript")}<div style="white-space:pre-wrap;color:${BRAND.inkSoft};font-size:14px;line-height:1.6;">${escapeHtml(data.transcript)}</div>`)
     : "";
@@ -182,17 +189,9 @@ function buildHtmlEmail(data) {
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:720px;">
             <tr>
               <td style="padding:22px 24px;background:${BRAND.sage};border-radius:10px 10px 0 0;color:#ffffff;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td style="vertical-align:middle;">
-                      <div style="display:inline-block;width:44px;height:44px;border-radius:50%;background:#ffffff;color:${BRAND.sage};font-weight:800;text-align:center;line-height:44px;margin-right:12px;">WFC</div>
-                    </td>
-                    <td style="vertical-align:middle;width:100%;">
-                      <p style="margin:0 0 4px;color:#e6b187;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;">WFC Australia</p>
-                      <h1 style="margin:0;color:#ffffff;font-size:26px;line-height:1.15;">${escapeHtml(data.title)}</h1>
-                    </td>
-                  </tr>
-                </table>
+                <img src="${escapeHtml(logoUrl)}" width="240" alt="WFC Australia" style="display:block;max-width:240px;width:100%;height:auto;border:0;margin:0 0 18px;">
+                <p style="margin:0 0 4px;color:#e6b187;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:800;">WFC Australia</p>
+                <h1 style="margin:0;color:#ffffff;font-size:26px;line-height:1.15;">${escapeHtml(data.title)}</h1>
               </td>
             </tr>
             <tr>
