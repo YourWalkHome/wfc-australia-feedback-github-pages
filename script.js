@@ -274,6 +274,7 @@ function getHandoverDetails() {
     business: formValue(handoverForm, "handover-business"),
     phone: formValue(handoverForm, "handover-phone"),
     time: formValue(handoverForm, "handover-time"),
+    includeTranscript: new FormData(handoverForm).get("handover-include-transcript") === "on",
   };
 }
 
@@ -299,13 +300,16 @@ async function submitHandover() {
   }
 
   try {
+    const handoverDetails = getHandoverDetails();
     const response = await fetch(`${API_BASE}/api/handover`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         sessionId: compassSession.id,
-        contact: getHandoverDetails(),
+        contact: handoverDetails,
+        summary: compassSession.summary,
         summaryText: managedSummary.value,
+        includeTranscript: handoverDetails.includeTranscript,
         messages: compassSession.messages,
       }),
     });
