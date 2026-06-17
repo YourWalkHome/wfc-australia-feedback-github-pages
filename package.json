@@ -4,7 +4,12 @@
   "private": true,
   "description": "WFC Australia website with a secure Compass conversation backend.",
   "scripts": {
-    "check": "node --check script.js && node --check lib/compass-agent.js && node --check api/compass.js && node --check api/handover.js"
+    "check": "node --check script.js && node --check compass-mail.js && node --check lib/compass-agent.js && node --check lib/compass-mail.js && node --check api/compass.js && node --check api/handover.js && node --check api/mail.js"
+  },
+  "dependencies": {
+    "imapflow": "^1.0.191",
+    "mailparser": "^3.7.2",
+    "nodemailer": "^6.9.15"
   },
   "engines": {
     "node": ">=20"

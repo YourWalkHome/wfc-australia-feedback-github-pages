@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Protected Compass Mail workspace for WFC Australia.">
+    <title>Compass Mail | WFC Australia</title>
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="assets/wfc-favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="WFC Australia home">
+        <img class="brand-mark" src="assets/wfc-lantern-mark.png" alt="" aria-hidden="true">
+        <span>
+          <strong>WFC Australia</strong>
+          <small>Understand. Decide. Move forward.</small>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Open navigation</span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="how-we-help.html">How We Help</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Start a Conversation</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="page-hero mail-hero">
+        <div class="section-inner narrow">
+          <p class="eyebrow">Compass Mail</p>
+          <h1>Ben&apos;s draft-first mailbox workspace.</h1>
+          <p>
+            Protected access for reviewing WFC email and preparing Outlook drafts
+            for Ben to send.
+          </p>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <section class="mail-auth-panel" aria-label="Compass Mail access">
+            <div>
+              <p class="eyebrow">Owner access</p>
+              <h2>Connect to ben@wfcaust.com.au.</h2>
+            </div>
+            <div class="mail-auth-controls">
+              <label class="sr-only" for="mail-token">Owner access token</label>
+              <input id="mail-token" type="password" autocomplete="off" placeholder="Owner access token">
+              <button class="button primary" type="button" id="mail-connect">Connect</button>
+            </div>
+            <p class="form-status" id="mail-status" role="status" aria-live="polite"></p>
+          </section>
+
+          <section class="mail-workspace" id="mail-workspace" aria-label="Compass mailbox workspace" hidden>
+            <div class="mail-toolbar">
+              <div class="field-group">
+                <label for="mailbox-select">Mailbox</label>
+                <select id="mailbox-select"></select>
+              </div>
+              <label class="checkbox-field compact-check" for="unread-only">
+                <input id="unread-only" type="checkbox">
+                <span>Unread only</span>
+              </label>
+              <button class="button secondary-dark" type="button" id="mail-refresh">Refresh</button>
+            </div>
+
+            <div class="mail-grid">
+              <section class="mail-list-panel" aria-label="Messages">
+                <div class="mail-list" id="message-list"></div>
+              </section>
+
+              <section class="mail-detail-panel" aria-label="Selected message">
+                <div class="mail-actions">
+                  <button class="button secondary-dark" type="button" id="mark-read" disabled>Mark Read</button>
+                  <button class="button secondary-dark" type="button" id="flag-message" disabled>Flag</button>
+                  <button class="button secondary-dark" type="button" id="draft-reply" disabled>Draft Reply</button>
+                  <button class="button secondary-dark" type="button" id="archive-message" disabled>Archive</button>
+                  <button class="button ghost" type="button" id="trash-message" disabled>Move To Deleted Items</button>
+                  <div class="mail-move-group">
+                    <label class="sr-only" for="move-select">Move message to mailbox</label>
+                    <select id="move-select"></select>
+                    <button class="button secondary-dark" type="button" id="move-message" disabled>Move</button>
+                  </div>
+                </div>
+                <div id="message-detail" class="message-detail">
+                  <div class="mail-placeholder">
+                    <p class="eyebrow">Mailbox</p>
+                    <h2>Select a message.</h2>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <section class="draft-panel" aria-label="Create Outlook draft">
+              <div class="experience-heading">
+                <p class="eyebrow">Draft email</p>
+                <h2>Create an Outlook draft.</h2>
+              </div>
+              <form class="draft-form" id="draft-form">
+                <div class="field-row">
+                  <div class="field-group">
+                    <label for="draft-to">To</label>
+                    <input id="draft-to" name="draft-to" type="text" autocomplete="off">
+                  </div>
+                  <div class="field-group">
+                    <label for="draft-subject">Subject</label>
+                    <input id="draft-subject" name="draft-subject" type="text" autocomplete="off">
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field-group">
+                    <label for="draft-cc">CC</label>
+                    <input id="draft-cc" name="draft-cc" type="text" autocomplete="off">
+                  </div>
+                  <div class="field-group">
+                    <label for="draft-bcc">BCC</label>
+                    <input id="draft-bcc" name="draft-bcc" type="text" autocomplete="off">
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label for="draft-body">Body</label>
+                  <textarea id="draft-body" name="draft-body" rows="10" required></textarea>
+                </div>
+                <div class="button-row form-actions">
+                  <button class="button primary" type="submit">Create Outlook Draft</button>
+                </div>
+                <p class="form-status" id="draft-status" role="status" aria-live="polite"></p>
+              </form>
+            </section>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner footer-expanded">
+        <div class="footer-brand-block">
+          <div class="footer-brand-line">
+            <img class="footer-mark" src="assets/wfc-lantern-mark.png" alt="" aria-hidden="true">
+            <div>
+              <strong>WFC Australia</strong>
+              <span>Understand. Decide. Move forward.</span>
+            </div>
+          </div>
+          <p>&copy; 2026 WFC Australia. Calm clarity for real-world complexity.</p>
+        </div>
+        <div class="footer-connect" aria-label="Connect with WFC Australia">
+          <p class="footer-label">Compass Mail</p>
+          <a href="mailto:ben@wfcaust.com.au">ben@wfcaust.com.au</a>
+          <a href="contact.html">Start a Conversation</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="compass-mail.js"></script>
+  </body>
+</html>

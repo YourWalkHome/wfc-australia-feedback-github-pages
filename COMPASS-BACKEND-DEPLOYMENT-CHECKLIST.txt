@@ -7,10 +7,12 @@ Current MVP:
 - Chat-style Compass interface
 - Secure /api/compass endpoint
 - Secure /api/handover endpoint
+- Protected /api/mail endpoint for Ben's Outlook IMAP mailbox
 - Browser session memory during the visit
 - Structured handover summary generation
 - Visitor review/edit before sharing
 - Email handover support
+- Owner-only Compass Mail page for reading/managing mail and creating Outlook drafts
 - Vercel deployment architecture
 
 1. Push Repository
@@ -35,7 +37,20 @@ Optional for direct email handover:
 - RESEND_API_KEY
 - HANDOVER_FROM_EMAIL or FROM_EMAIL
 
+Optional for Compass Mail owner workspace:
+- COMPASS_MAIL_ADMIN_TOKEN
+- COMPASS_MAIL_ADDRESS = ben@wfcaust.com.au
+- COMPASS_MAIL_USER = ben@wfcaust.com.au
+- COMPASS_MAIL_PASSWORD or COMPASS_MAIL_ACCESS_TOKEN
+- COMPASS_MAIL_IMAP_HOST = outlook.office365.com
+- COMPASS_MAIL_IMAP_PORT = 993
+- COMPASS_MAIL_IMAP_SECURE = true
+- COMPASS_MAIL_DRAFTS_MAILBOX = Drafts
+- COMPASS_MAIL_ARCHIVE_MAILBOX = Archive
+- COMPASS_MAIL_TRASH_MAILBOX = Deleted Items
+
 Do not hardcode API keys into website files.
+Do not hardcode mailbox passwords into website files.
 
 4. Deploy
 - Allow Vercel to complete the first deployment.
@@ -69,7 +84,17 @@ Confirm the visitor can review, edit, and approve before anything is shared.
 - Confirm no information is sent without visitor approval.
 - If email sending is not configured, confirm an email draft opens instead.
 
-8. Test Booking Process
+8. Test Compass Mail Owner Workspace
+- Visit /compass-mail.html.
+- Enter the owner access token.
+- Confirm Compass Mail connects only to ben@wfcaust.com.au.
+- Confirm messages can be listed and opened.
+- Confirm messages can be marked read/unread and flagged/unflagged.
+- Confirm messages can be moved, archived, and moved to Deleted Items.
+- Confirm Create Outlook Draft appends a draft to the Outlook Drafts folder.
+- Confirm there is no send button, send action, or SMTP capability.
+
+9. Test Booking Process
 - Confirm the visitor can move from Compass conversation to booking.
 - Confirm Ben receives context before the meeting.
 - Confirm the visitor receives booking confirmation through the chosen booking process.
