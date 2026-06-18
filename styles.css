@@ -1659,9 +1659,22 @@ textarea:focus {
   margin-top: 1rem;
 }
 
-.draft-form {
+.draft-form,
+.draft-assistant {
   display: grid;
   gap: 1rem;
+}
+
+.draft-assistant {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(238, 242, 236, 0.42);
+  padding: 1rem;
+}
+
+.draft-assistant textarea {
+  min-height: 130px;
+  background: #fff;
 }
 
 @media (max-width: 1080px) {

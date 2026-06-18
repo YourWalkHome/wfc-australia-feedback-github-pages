@@ -14,6 +14,8 @@ const flagButton = document.querySelector("#flag-message");
 const draftReplyButton = document.querySelector("#draft-reply");
 const archiveButton = document.querySelector("#archive-message");
 const trashButton = document.querySelector("#trash-message");
+const assistantDraftForm = document.querySelector("#assistant-draft-form");
+const assistantDraftStatus = document.querySelector("#assistant-draft-status");
 const draftForm = document.querySelector("#draft-form");
 const draftStatus = document.querySelector("#draft-status");
 
@@ -38,6 +40,12 @@ function setDraftStatus(message, tone = "neutral") {
   if (!draftStatus) return;
   draftStatus.textContent = message;
   draftStatus.dataset.tone = tone;
+}
+
+function setAssistantDraftStatus(message, tone = "neutral") {
+  if (!assistantDraftStatus) return;
+  assistantDraftStatus.textContent = message;
+  assistantDraftStatus.dataset.tone = tone;
 }
 
 function escapeHtml(value) {
@@ -161,6 +169,9 @@ function renderMessageDetail() {
     flagButton.disabled = false;
     flagButton.textContent = message.flags?.flagged ? "Clear Flag" : "Flag";
   }
+  if (assistantDraftForm && !formValue(assistantDraftForm, "assistant-draft-to")) {
+    setAssistantField("assistant-draft-to", message.replyTo || message.from || "");
+  }
   [draftReplyButton, archiveButton, trashButton, moveButton].forEach((button) => {
     if (button) button.disabled = false;
   });
@@ -168,6 +179,11 @@ function renderMessageDetail() {
 
 function setDraftField(name, value) {
   const field = draftForm?.elements.namedItem(name);
+  if (field) field.value = value;
+}
+
+function setAssistantField(name, value) {
+  const field = assistantDraftForm?.elements.namedItem(name);
   if (field) field.value = value;
 }
 
@@ -194,6 +210,20 @@ function prefillReplyDraft() {
   );
   setDraftStatus("Reply draft prepared locally. Review it before creating the Outlook draft.", "success");
   draftForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function selectedMessageContext() {
+  if (!mailState.selected) return "";
+  const message = mailState.selected;
+  return [
+    "Selected mailbox message context:",
+    `From: ${message.from || "Unknown"}`,
+    `To: ${message.to || "Not shown"}`,
+    `Date: ${formatDate(message.date)}`,
+    `Subject: ${message.subject || "(No subject)"}`,
+    "",
+    String(message.text || "").slice(0, 5000),
+  ].join("\n");
 }
 
 async function loadMailboxes() {
@@ -383,6 +413,28 @@ if (moveButton) {
       await refreshAfterAction(`Message moved to ${moveSelect.value}.`);
     } catch (error) {
       setMailStatus(error.message, "error");
+    }
+  });
+}
+
+if (assistantDraftForm) {
+  assistantDraftForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    try {
+      setAssistantDraftStatus("Compass is preparing a review draft...");
+      const data = await mailRequest("prepareDraft", {
+        to: formValue(assistantDraftForm, "assistant-draft-to"),
+        subjectHint: formValue(assistantDraftForm, "assistant-subject-hint"),
+        instruction: formValue(assistantDraftForm, "assistant-instruction"),
+        context: selectedMessageContext(),
+      });
+      setDraftField("draft-to", data.to || formValue(assistantDraftForm, "assistant-draft-to"));
+      setDraftField("draft-subject", data.subject || formValue(assistantDraftForm, "assistant-subject-hint"));
+      setDraftField("draft-body", data.body || "");
+      setAssistantDraftStatus("Draft prepared below. Review it before creating the Outlook draft.", "success");
+      draftForm?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (error) {
+      setAssistantDraftStatus(error.message, "error");
     }
   });
 }

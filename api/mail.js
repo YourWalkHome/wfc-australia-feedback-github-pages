@@ -12,6 +12,19 @@ const {
   updateFlags,
 } = require("../lib/compass-mail");
 
+const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
+
+const EMAIL_DRAFT_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["to", "subject", "body"],
+  properties: {
+    to: { type: "string" },
+    subject: { type: "string" },
+    body: { type: "string" },
+  },
+};
+
 function requestToken(req) {
   const headerToken = req.headers["x-compass-mail-token"];
   const authHeader = req.headers.authorization || "";
@@ -47,6 +60,111 @@ function authorizeMailAccess(req) {
 
 function bool(value) {
   return value === true || value === "true";
+}
+
+function clean(value, limit = 5000) {
+  return String(value || "").trim().slice(0, limit);
+}
+
+function extractOutputText(data) {
+  if (typeof data?.output_text === "string") return data.output_text;
+
+  const pieces = [];
+  for (const item of data?.output || []) {
+    if (item?.type !== "message") continue;
+    for (const content of item.content || []) {
+      if (content?.type === "output_text" && typeof content.text === "string") {
+        pieces.push(content.text);
+      }
+    }
+  }
+
+  return pieces.join("\n").trim();
+}
+
+function parseModelJson(text) {
+  if (!text) throw new Error("Compass returned an empty draft.");
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error("Compass did not return a draft in the expected format.");
+    return JSON.parse(match[0]);
+  }
+}
+
+async function prepareEmailDraft({ instruction, to, subjectHint, context }) {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is not configured.");
+  }
+
+  const safeInstruction = clean(instruction, 6000);
+  if (!safeInstruction) {
+    throw new Error("Tell Compass what the draft should say first.");
+  }
+
+  const response = await fetch(OPENAI_RESPONSES_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
+      instructions: `
+You are Compass Mail for WFC Australia.
+
+You help Ben prepare plain-text email drafts for human review.
+You never claim an email has been sent.
+You never instruct the system to send, delete, move, or expose credentials.
+You write in warm, practical Australian English with clear, natural wording.
+Keep the message concise unless the owner asks for more detail.
+Return only the requested JSON.
+`,
+      input: `
+Prepare a draft email.
+
+Owner instruction:
+${safeInstruction}
+
+Recipient supplied by owner:
+${clean(to, 1000) || "Not supplied"}
+
+Subject hint supplied by owner:
+${clean(subjectHint, 500) || "Not supplied"}
+
+Optional context from selected mailbox message or owner notes:
+${clean(context, 8000) || "No additional context supplied"}
+
+If the recipient is not supplied, leave "to" empty.
+If the subject hint is useful, use it or improve it gently.
+Do not include placeholders like [Name] unless the owner explicitly asks for a template.
+`,
+      max_output_tokens: 900,
+      store: false,
+      text: {
+        format: {
+          type: "json_schema",
+          name: "compass_mail_draft",
+          strict: true,
+          schema: EMAIL_DRAFT_SCHEMA,
+        },
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Compass draft request failed: ${response.status} ${errorText.slice(0, 300)}`);
+  }
+
+  const draft = parseModelJson(extractOutputText(await response.json()));
+  return {
+    to: clean(draft.to, 1000),
+    subject: clean(draft.subject, 500),
+    body: clean(draft.body, 20000),
+  };
 }
 
 module.exports = async function handler(req, res) {
@@ -113,6 +231,20 @@ module.exports = async function handler(req, res) {
           bcc: body.bcc,
           subject: body.subject,
           body: body.body,
+        })
+      );
+      return;
+    }
+
+    if (action === "prepareDraft") {
+      jsonResponse(
+        res,
+        200,
+        await prepareEmailDraft({
+          instruction: body.instruction,
+          to: body.to,
+          subjectHint: body.subjectHint,
+          context: body.context,
         })
       );
       return;

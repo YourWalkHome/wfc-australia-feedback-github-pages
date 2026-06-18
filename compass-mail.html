@@ -104,9 +104,37 @@
             <section class="draft-panel" aria-label="Create Outlook draft">
               <div class="experience-heading">
                 <p class="eyebrow">Draft email</p>
-                <h2>Create an Outlook draft.</h2>
+                <h2>Prepare and create an Outlook draft.</h2>
               </div>
+              <form class="draft-assistant" id="assistant-draft-form">
+                <div class="field-row">
+                  <div class="field-group">
+                    <label for="assistant-draft-to">To</label>
+                    <input id="assistant-draft-to" name="assistant-draft-to" type="text" autocomplete="off">
+                  </div>
+                  <div class="field-group">
+                    <label for="assistant-subject-hint">Subject hint</label>
+                    <input id="assistant-subject-hint" name="assistant-subject-hint" type="text" autocomplete="off">
+                  </div>
+                </div>
+                <div class="field-group">
+                  <label for="assistant-instruction">Ask Compass to prepare the draft</label>
+                  <textarea
+                    id="assistant-instruction"
+                    name="assistant-instruction"
+                    rows="5"
+                    placeholder="Example: Draft a warm email to Anna saying I will be in Brisbane on 17 July and would enjoy catching up if she has time."
+                    required
+                  ></textarea>
+                </div>
+                <div class="button-row form-actions">
+                  <button class="button secondary-dark" type="submit">Prepare Draft With Compass</button>
+                </div>
+                <p class="form-status" id="assistant-draft-status" role="status" aria-live="polite"></p>
+              </form>
+
               <form class="draft-form" id="draft-form">
+                <p class="eyebrow">Review before creating</p>
                 <div class="field-row">
                   <div class="field-group">
                     <label for="draft-to">To</label>
