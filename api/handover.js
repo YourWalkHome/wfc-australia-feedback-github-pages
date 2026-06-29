@@ -242,7 +242,8 @@ function buildHtmlEmail(data) {
                     ${sectionHeading("Compass Note")}
                     <p style="margin:0;color:${BRAND.inkSoft};line-height:1.6;">
                       This summary was prepared by Compass to help create a clearer starting point for the conversation.
-                      Compass does not diagnose, prescribe solutions, or replace professional judgement.
+                      Compass does not diagnose, prescribe solutions, or provide legal, financial, insolvency,
+                      tax, mental health, or crisis advice. It does not replace professional judgement.
                     </p>
                   `)}
 
@@ -286,7 +287,8 @@ function buildTextEmail(data) {
     "",
     "Compass Note",
     "This summary was prepared by Compass to help create a clearer starting point for the conversation.",
-    "Compass does not diagnose, prescribe solutions, or replace professional judgement.",
+    "Compass does not diagnose, prescribe solutions, or provide legal, financial, insolvency, tax, mental health, or crisis advice.",
+    "It does not replace professional judgement.",
     ...(data.includeTranscript
       ? ["", "Full Conversation Transcript", data.transcript || "Not provided"]
       : []),
