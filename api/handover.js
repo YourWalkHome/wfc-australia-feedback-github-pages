@@ -1,4 +1,5 @@
 const { jsonResponse, readJson, safeMessages } = require("../lib/compass-agent");
+const { attachHandover } = require("../lib/stewardship-store");
 
 const TIME_ZONE = "Australia/Brisbane";
 const BRAND = {
@@ -342,6 +343,15 @@ async function sendWithResend({ to, from, subject, text, html, replyTo }) {
   return response.json();
 }
 
+async function safelyAttachHandover(details) {
+  try {
+    return await attachHandover(details);
+  } catch (error) {
+    console.error("Stewardship handover storage warning:", error);
+    return null;
+  }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     jsonResponse(res, 405, { error: "Use POST for Compass handovers." });
@@ -356,6 +366,13 @@ module.exports = async function handler(req, res) {
       summary: body.summary || {},
       summaryText: clean(body.summaryText, 12000),
       includeTranscript: Boolean(body.includeTranscript || body.contact?.includeTranscript),
+      messages: Array.isArray(body.messages) ? body.messages : [],
+    });
+    const stewardshipRecord = await safelyAttachHandover({
+      sessionId: body.sessionId,
+      contact: body.contact || {},
+      summary: body.summary || {},
+      summaryText: clean(body.summaryText, 12000),
       messages: Array.isArray(body.messages) ? body.messages : [],
     });
     const emailBody = buildTextEmail(handoverData);
@@ -385,13 +402,19 @@ module.exports = async function handler(req, res) {
         });
       }
 
-      jsonResponse(res, 200, { sent: true });
+      jsonResponse(res, 200, {
+        sent: true,
+        conversationId: stewardshipRecord?.id,
+        stewardshipStored: Boolean(stewardshipRecord),
+      });
       return;
     }
 
     jsonResponse(res, 200, {
       sent: false,
       reason: "Email provider is not configured yet.",
+      conversationId: stewardshipRecord?.id,
+      stewardshipStored: Boolean(stewardshipRecord),
       mailto: `mailto:${benEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`,
     });
   } catch (error) {

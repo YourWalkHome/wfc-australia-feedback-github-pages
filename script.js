@@ -43,6 +43,7 @@ function loadSession() {
 
   return {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+    conversationId: null,
     messages: [],
     summary: null,
   };
@@ -134,6 +135,22 @@ async function callCompass(action, extra = {}) {
   return response.json();
 }
 
+function rememberConversationId(data) {
+  if (data?.conversationId) {
+    compassSession.conversationId = data.conversationId;
+    saveSession();
+  }
+}
+
+async function markBenConnection(reason) {
+  try {
+    const data = await callCompass("connect", { reason });
+    rememberConversationId(data);
+  } catch (error) {
+    console.warn("Compass stewardship connection marker could not be saved.", error);
+  }
+}
+
 async function startCompass() {
   if (!conversationLog || !conversationForm) return;
 
@@ -185,6 +202,7 @@ async function sendVisitorMessage(message) {
 
   try {
     const data = await callCompass("chat");
+    rememberConversationId(data);
     loading?.remove();
     addMessage("compass", data.reply);
     if (prepareSummary) {
@@ -250,6 +268,7 @@ async function prepareHandoverSummary() {
 
   try {
     const data = await callCompass("summary");
+    rememberConversationId(data);
     compassSession.summary = data.summary;
     saveSession();
     renderSummary(data.summary);
@@ -319,6 +338,7 @@ async function submitHandover() {
     }
 
     const data = await response.json();
+    rememberConversationId(data);
 
     if (data.sent) {
       if (handoverStatus) {
@@ -395,7 +415,14 @@ if (continueToHandover && handoverPanel) {
   continueToHandover.addEventListener("click", () => {
     handoverPanel.hidden = false;
     updateBookingLink();
+    markBenConnection("continue_to_booking");
     handoverPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+if (bookBen) {
+  bookBen.addEventListener("click", () => {
+    markBenConnection("book_with_ben");
   });
 }
 

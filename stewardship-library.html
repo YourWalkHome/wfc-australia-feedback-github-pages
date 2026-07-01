@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Stewardship Library | WFC Australia</title>
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="assets/wfc-favicon-32.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="WFC Australia home">
+        <img class="brand-mark" src="assets/wfc-lantern-mark.png" alt="" aria-hidden="true">
+        <span>
+          <strong>WFC Australia</strong>
+          <small>Stewardship Library</small>
+        </span>
+      </a>
+    </header>
+
+    <main id="main">
+      <section class="page-hero stewardship-hero">
+        <div class="section-inner narrow">
+          <p class="eyebrow">Internal WFC tool</p>
+          <h1>Stewardship Library.</h1>
+          <p>
+            Review Compass conversations, make one stewardship decision, and
+            capture the learning note that should remain visible after refresh.
+          </p>
+        </div>
+      </section>
+
+      <section class="section compact-start">
+        <div class="section-inner">
+          <section class="stewardship-access" id="stewardship-access">
+            <div>
+              <p class="eyebrow">Private access</p>
+              <h2>Enter the stewardship access key.</h2>
+              <p>
+                This MVP page is protected by a temporary internal access key.
+                It can be replaced with proper authentication later.
+              </p>
+            </div>
+            <form id="stewardship-access-form" class="stewardship-access-form">
+              <label for="stewardship-key">Access key</label>
+              <input id="stewardship-key" name="stewardship-key" type="password" autocomplete="current-password">
+              <button class="button primary" type="submit">Open Library</button>
+              <p class="form-status" id="stewardship-access-status" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="stewardship-app" id="stewardship-app" hidden>
+            <div class="stewardship-toolbar">
+              <div>
+                <p class="eyebrow">Stewardship loop</p>
+                <h2>Submitted conversations.</h2>
+              </div>
+              <div class="button-row">
+                <button class="button secondary-dark" type="button" id="stewardship-refresh">Refresh</button>
+                <button class="button ghost" type="button" id="stewardship-lock">Lock</button>
+              </div>
+            </div>
+
+            <div class="stewardship-layout">
+              <aside class="stewardship-list-panel" aria-label="Conversation list">
+                <div class="stewardship-list" id="stewardship-list"></div>
+              </aside>
+
+              <section class="stewardship-detail" id="stewardship-detail" aria-live="polite">
+                <p class="muted-note">Choose a conversation to review.</p>
+              </section>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="stewardship-library.js"></script>
+  </body>
+</html>
